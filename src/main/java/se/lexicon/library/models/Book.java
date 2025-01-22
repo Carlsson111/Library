@@ -1,14 +1,15 @@
 package se.lexicon.library.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 public class Book {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -18,6 +19,16 @@ public class Book {
     private String title;
 
     private int maxLoanDays;
+
+    @ManyToMany (cascade = {CascadeType.ALL})
+    @JoinTable(
+            name = "book_author",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id")
+
+
+    )
+    private List<Author> authors = new ArrayList<>();
 
     public Book() {
     }
