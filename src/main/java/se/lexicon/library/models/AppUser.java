@@ -3,6 +3,8 @@ package se.lexicon.library.models;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -19,6 +21,9 @@ public class AppUser {
 
     @Column(nullable = false)
     private LocalDate regDate;
+
+    @OneToMany(mappedBy = "borrower", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BookLoan> bookLoans = new ArrayList<>();
 
     @OneToOne
     @JoinColumn
@@ -76,6 +81,15 @@ public class AppUser {
 
     public void setUserDetails(Details userDetails) {
         this.userDetails = userDetails;
+    }
+
+    public void addBookLoan(BookLoan bookLoan) {
+        bookLoans.add(bookLoan);
+        bookLoan.setBorrower(this);
+    }
+    public void removeBookLoan(BookLoan bookLoan) {
+        bookLoans.remove(bookLoan);
+        bookLoan.setBorrower(null);
     }
 
     @Override

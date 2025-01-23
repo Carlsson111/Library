@@ -2,6 +2,8 @@ package se.lexicon.library.models;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 @Entity
 public class Author {
@@ -17,9 +19,14 @@ public class Author {
     private String lastName;
 
     @ManyToMany(mappedBy = "authors", cascade = {CascadeType.ALL})
-    private Set<Book> writtenBooks;
+    private Set<Book> writtenBooks = new HashSet<>();
 
     public Author() {
+    }
+
+    public Author(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     public Author(String firstName, String lastName, Set<Book> writtenBooks) {
@@ -61,5 +68,37 @@ public class Author {
 
     public void setWrittenBooks(Set<Book> writtenBooks) {
         this.writtenBooks = writtenBooks;
+    }
+
+    public void addBook(Book book) {
+        writtenBooks.add(book);
+        book.getAuthors().add(this);
+    }
+
+    public void removeBook(Book book) {
+        writtenBooks.remove(book);
+        book.getAuthors().remove(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Author author = (Author) o;
+        return id == author.id && Objects.equals(firstName, author.firstName) && Objects.equals(lastName, author.lastName) && Objects.equals(writtenBooks, author.writtenBooks);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, writtenBooks);
+    }
+
+    @Override
+    public String toString() {
+        return "Author{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", writtenBooks=" + writtenBooks +
+                '}';
     }
 }

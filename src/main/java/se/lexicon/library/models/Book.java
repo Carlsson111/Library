@@ -25,8 +25,6 @@ public class Book {
             name = "book_author",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id")
-
-
     )
     private List<Author> authors = new ArrayList<>();
 
@@ -48,6 +46,14 @@ public class Book {
 
     public int getId() {
         return id;
+    }
+
+    public List<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
     }
 
     public String getIsbn() {
@@ -72,6 +78,14 @@ public class Book {
 
     public void setMaxLoanDays(int maxLoanDays) {
         this.maxLoanDays = maxLoanDays;
+    }
+    public void addAuthor(Author author) {
+        authors.add(author);
+        author.getWrittenBooks().add(this);
+    }
+    public void removeAuthor(Author author) {
+        authors.remove(author);
+        author.getWrittenBooks().remove(this);
     }
 
     @Override

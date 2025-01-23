@@ -1,6 +1,7 @@
 package se.lexicon.library.repository;
 
 import jakarta.transaction.Transactional;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -10,7 +11,7 @@ import se.lexicon.library.models.BookLoan;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface BookLoanRepository extends CrudRepository<BookLoan, Integer> {
+public interface BookLoanRepository extends JpaRepository<BookLoan, Integer> {
 
     List<BookLoan> findByBorrowerId(int borrowerId);
 
